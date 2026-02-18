@@ -3,8 +3,10 @@
 <: ../.denavy/vendor/dna/registry-root.dna
 
 @config.stack
-    default LANG = "Java"
-    default FRAMEWORK = "Spring Boot"
+    default LANG = "Java 25"
+    default FRAMEWORK = "Spring Boot 4.0.2"
+    default DB = "H2 2.4.240"
 
 @policy.convention
-    ! error_handling: "Throw Exception"
+    ! error_handling: "Result<T, E>" # No Throw! Strictly Functional Error Handling
+    ! architecture: "3-Layer Parallel Mirroring"
