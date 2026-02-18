@@ -1,0 +1,10 @@
+# FILE: sample-denavy/dna/root.dna
+
+<: ../.denavy/vendor/dna/registry-root.dna
+
+@config.stack
+    default LANG = "Java"
+    default FRAMEWORK = "Spring Boot"
+
+@policy.convention
+    ! error_handling: "Throw Exception"

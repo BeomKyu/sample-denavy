@@ -1,0 +1,16 @@
+# FILE: sample-denavy/dna/domain/app.dna
+
+<: ../root.dna
+
+@type.entity
+    entity App:
+        id: string
+        name: string
+        owner_id: string
+        permissions: list(string)
+        status: enum(PENDING, ACTIVE, BLOCKED)
+
+@policy.invariant
+    ! name.length >= 3
+    ! name.length <= 50
+    ! permissions.is_not_empty

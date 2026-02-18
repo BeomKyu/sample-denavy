@@ -1,0 +1,31 @@
+# FILE: registry-root.dna
+# 역할: 레지스트리 내 모든 프로젝트가 공유하는 공통 통신 규약 및 기호 정의
+
+@bootloader
+    def symbol:
+        !  : "Invariant (필수 제약/검증)"
+        ?  : "Decision (조건 분기/IF)"
+        >  : "Execute (함수 실행/API 호출)"
+        <- : "Assign (변수 할당)"
+        * : "Loop (반복/순회)"
+        => : "Return (결과 반환/에러 전파)"
+        @  : "Import (외부 참조)"
+        <: : "Inherit (상속)"
+
+@structure.base
+    rule Architecture:
+        require_layers: [/dna, /spec, /src]
+        read_only_layer: [/src]
+
+@protocol.interaction
+    rule Cross_Project:
+        access == "READ_ONLY"
+    
+    format import:
+        syntax: "import [Alias] from 'registry://[Project]/[Module]'"
+    
+    format request:
+        syntax: ".bonfire/outbox/[Target_Project]/[Date]_[Issue].req"
+    
+    format fork:
+        syntax: "fork from 'registry://[Project]/[Module]' to local"

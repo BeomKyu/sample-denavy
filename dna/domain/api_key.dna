@@ -1,0 +1,15 @@
+# FILE: sample-denavy/dna/domain/api_key.dna
+
+<: ../root.dna
+
+@type.entity
+    entity ApiKey:
+        id: string
+        app_id: string
+        key_hash: string
+        issued_at: timestamp
+        expires_at: timestamp
+
+@policy.invariant
+    ! key_hash.is_secure_hashed
+    ! expires_at > issued_at
