@@ -1,0 +1,17 @@
+# 사용자 도메인 — 영구 저장 엔티티 뼈대 (DB 스키마 기준)
+@import $BaseEntity, $Enum, $T from ~.denavy/vendor/dna/ecosystem.dna
+
+User <: $BaseEntity
+  # ── 식별자 (BaseEntity 로부터 id : UUID ! required @auto 상속) ─────────
+
+  # ── 인증 정보 ────────────────────────────────────────────────────────────
+  username        : $T.Username  ! @unique
+  email           : $T.Email     ! @unique
+  hashed_password : Str          ! @hashed @internal   # 절대 외부 노출 금지
+
+  # ── 선택 프로필 ──────────────────────────────────────────────────────────
+  full_name : $T.FullName
+
+  # ── 상태 및 권한 ─────────────────────────────────────────────────────────
+  role      : $Enum.Role    <- "user"
+  status    : $Enum.Status  <- "active"

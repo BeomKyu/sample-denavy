@@ -1,3 +1,20 @@
+# 프로젝트 루트 설정 — 타겟 스택 및 전역 의존성 선언
+@import $Ecosystem from ~.denavy/vendor/dna/ecosystem.dna
+
+# ── 타겟 기술 스택 (Python / FastAPI 고정) ──────────────────────────────
+$Stack
+  language  : Python      @version(3.11)
+  framework : FastAPI     @version(0.110)
+  orm       : SQLAlchemy  @version(2.0)
+  db        : PostgreSQL  @version(15)
+  validator : Pydantic    @version(2.0)
+
+# ── 전역 프로젝트 정책 ────────────────────────────────────────────────────
+$ProjectPolicy
+  encoding     : UTF-8
+  timezone     : UTC
+  id_strategy  : UUID4
+  @inherit $Ecosystem.$SecurityPolicy
 # [LOCAL PROJECT ROOT DNA v1.0]
 # 로컬 프로젝트(지방 군집)의 고유 정체성, 기술 스택 및 전역 제약
 
