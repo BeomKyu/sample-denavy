@@ -1,0 +1,7 @@
+# 로그인 입력 제약 — 폼 DTO (인증 처리 전 유효성 검증 전용)
+@import $T from ~dna/root.dna
+
+LoginInput
+  # ── 필수 입력 ────────────────────────────────────────────────────────────
+  email    : $T.Email     !
+  password : $T.Password  !
