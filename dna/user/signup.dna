@@ -1,0 +1,20 @@
+# 회원가입 입력 제약 — 폼 DTO (DB 저장 전 유효성 검증 전용)
+@import $T from ~.denavy/vendor/dna/ecosystem.dna
+@import $User from ~dna/user/entity.dna
+
+SignupInput
+  # ── 필수 입력 ────────────────────────────────────────────────────────────
+  username         : $T.Username  ! @unique_check($User.username)
+  email            : $T.Email     ! @unique_check($User.email)
+  password         : $T.Password  ! @pattern((?=.*[a-z])(?=.*[A-Z])(?=.*\d))
+                                   # 소문자·대문자·숫자 각 1자 이상 포함
+  password_confirm : Str          ! @match(.password)
+                                   # 위 password 필드와 동일해야 함
+
+  # ── 선택 입력 ────────────────────────────────────────────────────────────
+  full_name : $T.FullName
+
+# ── 매핑 규칙: SignupInput → User (src 컴파일 시 참조) ───────────────────
+# SignupInput.password  →  hash(bcrypt, cost=12)  →  User.hashed_password
+# 나머지 필드는 동일 이름으로 1:1 매핑
+# User.role, User.status 는 기본값($Enum 정의)으로 자동 설정
