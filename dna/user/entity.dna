@@ -1,5 +1,5 @@
 # 사용자 도메인 — 영구 저장 엔티티 뼈대 (DB 스키마 기준)
-@import $BaseEntity, $Enum, $T from ~.denavy/vendor/dna/ecosystem.dna
+@import $BaseEntity, $Enum, $T from ~dna/root.dna
 
 User <: $BaseEntity
   # ── 식별자 (BaseEntity 로부터 id : UUID ! required @auto 상속) ─────────
