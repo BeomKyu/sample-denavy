@@ -1,0 +1,9 @@
+# 인증 토큰 출력 규격 — JWT 응답 DTO
+@import $SecurityPolicy from ~dna/root.dna
+
+TokenOutput
+  # ── 응답 페이로드 ─────────────────────────────────────────────────────────
+  access_token : Str  !                         # JWT 서명 문자열
+  token_type   : Str  ! <- "bearer"             # OAuth2 표준 타입
+  expires_in   : int  ! <- $SecurityPolicy.token_expire  # 만료 시간 (초, OAuth2 RFC 6749)
+  # algorithm : $SecurityPolicy.token_algorithm  # HS256 (내부 서명 설정, 노출 안 함)

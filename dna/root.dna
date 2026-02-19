@@ -1,50 +1,48 @@
-# 프로젝트 루트 설정 — 타겟 스택 및 전역 의존성 선언
-@import $Ecosystem from ~.denavy/vendor/dna/ecosystem.dna
-
-# ── 타겟 기술 스택 (Python / FastAPI 고정) ──────────────────────────────
-$Stack
-  language  : Python      @version(3.11)
-  framework : FastAPI     @version(0.110)
-  orm       : SQLAlchemy  @version(2.0)
-  db        : PostgreSQL  @version(15)
-  validator : Pydantic    @version(2.0)
-
-# ── 전역 프로젝트 정책 ────────────────────────────────────────────────────
-$ProjectPolicy
-  encoding     : UTF-8
-  timezone     : UTC
-  id_strategy  : UUID4
-  @inherit $Ecosystem.$SecurityPolicy
 # [LOCAL PROJECT ROOT DNA v1.0]
 # 로컬 프로젝트(지방 군집)의 고유 정체성, 기술 스택 및 전역 제약
 
-# 1. 생태계 공통 헌법 상속 (기호, 철학, 프로토콜 수입)
+# 1. 생태계 공통 헌법 상속
 <: ../.denavy/vendor/dna/ecosystem.dna
 
-@bootloader:
-  # ==========================================
-  # 2. 이 프로젝트(지방 군집)만의 고유한 정체성
-  # ==========================================
-  $Identity:
-    Name: "Sample Auth Service"
-    Role: "사용자 인증(회원가입/로그인) 처리를 담당하는 독립 연방 군집"
-    Permissions: "자신이 소유한 로컬 DB에 한하여 Read/Write 권한 보유" !
+# ── 전역 기본 엔티티 뼈대 ──────────────────────────────────────────────────
+$BaseEntity
+  id         : UUID     ! required @auto
+  created_at : DateTime ! @auto
+  updated_at : DateTime ! @auto
 
-  # ==========================================
-  # 3. 기술 스택 족쇄 (Tech Stack Lock)
-  # 에이전트가 /src 구현체를 생성할 때 이 스택을 절대적으로 준수해야 함
-  # ==========================================
-  $TechStack:
-    Language: "Python 3.11+"
-    Framework: "FastAPI"
-    Database: "SQLite"
-    ORM: "SQLAlchemy 2.0"
-    Auth: "JWT (JSON Web Token)"
+# ── 전역 타입 별칭 ────────────────────────────────────────────────────────
+$T
+  Email    : Str  ! @format(email)
+  Password : Str  ! @len(8,72)   # 72 = bcrypt 최대 입력 길이
+  Username : Str  ! @len(3,30) @pattern([a-zA-Z0-9_]+)
+  FullName : Str  @len(1,100)
 
-  # ==========================================
-  # 4. 프로젝트 전역 환경 변수 및 공통 제약 (Global Constants)
-  # 하위 명세(.spec, .dna)에서 $Globals.MAX_LOGIN_ATTEMPTS 처럼 참조 가능
-  # ==========================================
-  $Globals:
-    MAX_LOGIN_ATTEMPTS: int = 5 !
-    SESSION_TIMEOUT_HOURS: int = 2 !
+# ── 전역 열거형 ───────────────────────────────────────────────────────────
+$Enum
+  Role   : [admin, user, guest]  <- "user"
+  Status : [active, inactive, banned]  <- "active"
+
+# ── 전역 보안 정책 ────────────────────────────────────────────────────────
+$SecurityPolicy
+  password_hash   : bcrypt  @cost(12)
+  token_algorithm : HS256
+  token_expire    : 3600    # seconds
+
+# ── 프로젝트 정체성 ───────────────────────────────────────────────────────
+$Identity
+  Name        : "Sample Auth Service"
+  Role        : "사용자 인증(회원가입/로그인) 처리를 담당하는 독립 연방 군집"
+  Permissions : "자신이 소유한 로컬 DB에 한하여 Read/Write 권한 보유" !
+
+# ── 기술 스택 족쇄 (Tech Stack Lock) ──────────────────────────────────────
+$TechStack
+  Language  : Python      @version(3.11)
+  Framework : FastAPI     @version(0.110)
+  ORM       : SQLAlchemy  @version(2.0)
+  Database  : SQLite
+  Auth      : JWT
+
+# ── 프로젝트 전역 상수 ────────────────────────────────────────────────────
+$Globals
+  MAX_LOGIN_ATTEMPTS    : int = 5  !
+  SESSION_TIMEOUT_HOURS : int = 2  !
