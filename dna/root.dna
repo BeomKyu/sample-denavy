@@ -1,0 +1,33 @@
+# [LOCAL PROJECT ROOT DNA v1.0]
+# 로컬 프로젝트(지방 군집)의 고유 정체성, 기술 스택 및 전역 제약
+
+# 1. 생태계 공통 헌법 상속 (기호, 철학, 프로토콜 수입)
+<: ../.denavy/vendor/dna/ecosystem.dna
+
+@bootloader:
+  # ==========================================
+  # 2. 이 프로젝트(지방 군집)만의 고유한 정체성
+  # ==========================================
+  $Identity:
+    Name: "Sample Auth Service"
+    Role: "사용자 인증(회원가입/로그인) 처리를 담당하는 독립 연방 군집"
+    Permissions: "자신이 소유한 로컬 DB에 한하여 Read/Write 권한 보유" !
+
+  # ==========================================
+  # 3. 기술 스택 족쇄 (Tech Stack Lock)
+  # 에이전트가 /src 구현체를 생성할 때 이 스택을 절대적으로 준수해야 함
+  # ==========================================
+  $TechStack:
+    Language: "Python 3.11+"
+    Framework: "FastAPI"
+    Database: "SQLite"
+    ORM: "SQLAlchemy 2.0"
+    Auth: "JWT (JSON Web Token)"
+
+  # ==========================================
+  # 4. 프로젝트 전역 환경 변수 및 공통 제약 (Global Constants)
+  # 하위 명세(.spec, .dna)에서 $Globals.MAX_LOGIN_ATTEMPTS 처럼 참조 가능
+  # ==========================================
+  $Globals:
+    MAX_LOGIN_ATTEMPTS: int = 5 !
+    SESSION_TIMEOUT_HOURS: int = 2 !
